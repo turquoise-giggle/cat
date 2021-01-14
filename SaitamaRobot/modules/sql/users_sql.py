@@ -14,7 +14,7 @@ from sqlalchemy import (
 
 
 class Users(BASE):
-    __tablename__ = "users"
+    __tablename__ = 'users'
     user_id = Column(Integer, primary_key=True)
     username = Column(UnicodeText)
 
@@ -23,11 +23,11 @@ class Users(BASE):
         self.username = username
 
     def __repr__(self):
-        return "<User {} ({})>".format(self.username, self.user_id)
+        return f'<User {self.username} ({self.user_id})>'
 
 
 class Chats(BASE):
-    __tablename__ = "chats"
+    __tablename__ = 'chats'
     chat_id = Column(String(14), primary_key=True)
     chat_name = Column(UnicodeText, nullable=False)
 
@@ -36,31 +36,35 @@ class Chats(BASE):
         self.chat_name = chat_name
 
     def __repr__(self):
-        return "<Chat {} ({})>".format(self.chat_name, self.chat_id)
+        return f'<Chat {self.chat_name} ({self.chat_id})>'
 
 
 class ChatMembers(BASE):
-    __tablename__ = "chat_members"
+    __tablename__ = 'chat_members'
     priv_chat_id = Column(Integer, primary_key=True)
     # NOTE: Use dual primary key instead of private primary key?
     chat = Column(
         String(14),
-        ForeignKey("chats.chat_id", onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKey('chats.chat_id', onupdate='CASCADE', ondelete='CASCADE'),
         nullable=False,
     )
     user = Column(
         Integer,
-        ForeignKey("users.user_id", onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKey('users.user_id', onupdate='CASCADE', ondelete='CASCADE'),
         nullable=False,
     )
-    __table_args__ = (UniqueConstraint("chat", "user", name="_chat_members_uc"),)
+    __table_args__ = (
+        UniqueConstraint(
+            'chat', 'user', name='_chat_members_uc',
+        ),
+    )
 
     def __init__(self, chat, user):
         self.chat = chat
         self.user = user
 
     def __repr__(self):
-        return "<Chat user {} ({}) in chat {} ({})>".format(
+        return '<Chat user {} ({}) in chat {} ({})>'.format(
             self.user.username,
             self.user.user_id,
             self.chat.chat_name,
@@ -159,7 +163,9 @@ def get_all_users():
 def get_user_num_chats(user_id):
     try:
         return (
-            SESSION.query(ChatMembers).filter(ChatMembers.user == int(user_id)).count()
+            SESSION.query(ChatMembers).filter(
+                ChatMembers.user == int(user_id),
+            ).count()
         )
     finally:
         SESSION.close()
@@ -168,7 +174,9 @@ def get_user_num_chats(user_id):
 def get_user_com_chats(user_id):
     try:
         chat_members = (
-            SESSION.query(ChatMembers).filter(ChatMembers.user == int(user_id)).all()
+            SESSION.query(ChatMembers).filter(
+                ChatMembers.user == int(user_id),
+            ).all()
         )
         return [i.chat for i in chat_members]
     finally:

@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, UnicodeText
 
 
 class BlacklistUsers(BASE):
-    __tablename__ = "blacklistusers"
+    __tablename__ = 'blacklistusers'
     user_id = Column(String(14), primary_key=True)
     reason = Column(UnicodeText)
 
@@ -45,7 +45,7 @@ def unblacklist_user(user_id):
 
 def get_reason(user_id):
     user = SESSION.query(BlacklistUsers).get(str(user_id))
-    rep = ""
+    rep = ''
     if user:
         rep = user.reason
 
@@ -60,7 +60,10 @@ def is_user_blacklisted(user_id):
 def __load_blacklist_userid_list():
     global BLACKLIST_USERS
     try:
-        BLACKLIST_USERS = {int(x.user_id) for x in SESSION.query(BlacklistUsers).all()}
+        BLACKLIST_USERS = {
+            int(x.user_id)
+            for x in SESSION.query(BlacklistUsers).all()
+        }
     finally:
         SESSION.close()
 

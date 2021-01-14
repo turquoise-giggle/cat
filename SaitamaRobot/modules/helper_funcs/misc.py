@@ -21,7 +21,7 @@ def split_message(msg: str) -> List[str]:
         return [msg]
 
     lines = msg.splitlines(True)
-    small_msg = ""
+    small_msg = ''
     result = []
     for line in lines:
         if len(small_msg) + len(line) < MAX_MESSAGE_LENGTH:
@@ -42,27 +42,30 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
             [
                 EqInlineKeyboardButton(
                     x.__mod_name__,
-                    callback_data="{}_module({})".format(
-                        prefix, x.__mod_name__.lower()
+                    callback_data='{}_module({})'.format(
+                        prefix, x.__mod_name__.lower(),
                     ),
                 )
                 for x in module_dict.values()
-            ]
+            ],
         )
     else:
         modules = sorted(
             [
                 EqInlineKeyboardButton(
                     x.__mod_name__,
-                    callback_data="{}_module({},{})".format(
-                        prefix, chat, x.__mod_name__.lower()
+                    callback_data='{}_module({},{})'.format(
+                        prefix, chat, x.__mod_name__.lower(),
                     ),
                 )
                 for x in module_dict.values()
-            ]
+            ],
         )
 
-    pairs = [modules[i * 3 : (i + 1) * 3] for i in range((len(modules) + 3 - 1) // 3)]
+    pairs = [
+        modules[i * 3: (i + 1) * 3]
+        for i in range((len(modules) + 3 - 1) // 3)
+    ]
 
     round_num = len(modules) / 3
     calc = len(modules) - round(round_num)
@@ -72,14 +75,17 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
 
 
 def send_to_list(
-    bot: Bot, send_to: list, message: str, markdown=False, html=False
+    bot: Bot, send_to: list, message: str, markdown=False, html=False,
 ) -> None:
     if html and markdown:
-        raise Exception("Can only send with either markdown or HTML!")
+        raise Exception('Can only send with either markdown or HTML!')
     for user_id in set(send_to):
         try:
             if markdown:
-                bot.send_message(user_id, message, parse_mode=ParseMode.MARKDOWN)
+                bot.send_message(
+                    user_id, message,
+                    parse_mode=ParseMode.MARKDOWN,
+                )
             elif html:
                 bot.send_message(user_id, message, parse_mode=ParseMode.HTML)
             else:
@@ -100,12 +106,12 @@ def build_keyboard(buttons):
 
 
 def revert_buttons(buttons):
-    res = ""
+    res = ''
     for btn in buttons:
         if btn.same_line:
-            res += "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
+            res += f'\n[{btn.name}](buttonurl://{btn.url}:same)'
         else:
-            res += "\n[{}](buttonurl://{})".format(btn.name, btn.url)
+            res += f'\n[{btn.name}](buttonurl://{btn.url})'
 
     return res
 
@@ -113,8 +119,8 @@ def revert_buttons(buttons):
 def build_keyboard_parser(bot, chat_id, buttons):
     keyb = []
     for btn in buttons:
-        if btn.url == "{rules}":
-            btn.url = "http://t.me/{}?start={}".format(bot.username, chat_id)
+        if btn.url == '{rules}':
+            btn.url = f'http://t.me/{bot.username}?start={chat_id}'
         if btn.same_line and keyb:
             keyb[-1].append(InlineKeyboardButton(btn.name, url=btn.url))
         else:

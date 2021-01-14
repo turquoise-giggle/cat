@@ -40,41 +40,43 @@ def echo(update: Update, context: CallbackContext):
 
     if message.reply_to_message:
         message.reply_to_message.reply_text(
-            args[1], parse_mode="MARKDOWN", disable_web_page_preview=True
+            args[1], parse_mode='MARKDOWN', disable_web_page_preview=True,
         )
     else:
         message.reply_text(
-            args[1], quote=False, parse_mode="MARKDOWN", disable_web_page_preview=True
+            args[1], quote=False, parse_mode='MARKDOWN', disable_web_page_preview=True,
         )
     message.delete()
 
 
 def markdown_help_sender(update: Update):
-    update.effective_message.reply_text(MARKDOWN_HELP, parse_mode=ParseMode.HTML)
     update.effective_message.reply_text(
-        "Try forwarding the following message to me, and you'll see, and Use #test!"
+        MARKDOWN_HELP, parse_mode=ParseMode.HTML,
     )
     update.effective_message.reply_text(
-        "/save test This is a markdown test. _italics_, *bold*, code, "
-        "[URL](example.com) [button](buttonurl:github.com) "
-        "[button2](buttonurl://google.com:same)"
+        "Try forwarding the following message to me, and you'll see, and Use #test!",
+    )
+    update.effective_message.reply_text(
+        '/save test This is a markdown test. _italics_, *bold*, code, '
+        '[URL](example.com) [button](buttonurl:github.com) '
+        '[button2](buttonurl://google.com:same)',
     )
 
 
 @run_async
 def markdown_help(update: Update, context: CallbackContext):
-    if update.effective_chat.type != "private":
+    if update.effective_chat.type != 'private':
         update.effective_message.reply_text(
-            "Contact me in pm",
+            'Contact me in pm',
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            "Markdown help",
-                            url=f"t.me/{context.bot.username}?start=markdownhelp",
-                        )
-                    ]
-                ]
+                            'Markdown help',
+                            url=f't.me/{context.bot.username}?start=markdownhelp',
+                        ),
+                    ],
+                ],
             ),
         )
         return
@@ -88,31 +90,28 @@ __help__ = """
 *Paste:*
  • `/paste`*:* Saves replied content to `nekobin.com` and replies with a url
 *React:*
- • `/react`*:* Reacts with a random reaction 
+ • `/react`*:* Reacts with a random reaction
 *Urban Dictonary:*
  • `/ud <word>`*:* Type the word or expression you want to search use
 *Wikipedia:*
  • `/wiki <query>`*:* wikipedia your query
 *Wallpapers:*
  • `/wall <query>`*:* get a wallpaper from wall.alphacoders.com
-*Currency converter:* 
+*Currency converter:*
  • `/cash`*:* currency converter
 Example:
- `/cash 1 USD INR`  
+ `/cash 1 USD INR`
       _OR_
  `/cash 1 usd inr`
 Output: `1.0 USD = 75.505 INR`
 """
 
-ECHO_HANDLER = DisableAbleCommandHandler("echo", echo, filters=Filters.group)
-MD_HELP_HANDLER = CommandHandler("markdownhelp", markdown_help)
+ECHO_HANDLER = DisableAbleCommandHandler('echo', echo, filters=Filters.group)
+MD_HELP_HANDLER = CommandHandler('markdownhelp', markdown_help)
 
 dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
 
-__mod_name__ = "Extras"
-__command_list__ = ["id", "echo"]
-__handlers__ = [
-    ECHO_HANDLER,
-    MD_HELP_HANDLER,
-]
+__mod_name__ = 'Extras'
+__command_list__ = ['id', 'echo']
+__handlers__ = [ECHO_HANDLER, MD_HELP_HANDLER]

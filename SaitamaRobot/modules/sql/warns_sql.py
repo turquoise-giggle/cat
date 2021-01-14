@@ -6,7 +6,7 @@ from sqlalchemy.dialects import postgresql
 
 
 class Warns(BASE):
-    __tablename__ = "warns"
+    __tablename__ = 'warns'
 
     user_id = Column(Integer, primary_key=True)
     chat_id = Column(String(14), primary_key=True)
@@ -20,13 +20,13 @@ class Warns(BASE):
         self.reasons = []
 
     def __repr__(self):
-        return "<{} warns for {} in {} for reasons {}>".format(
-            self.num_warns, self.user_id, self.chat_id, self.reasons
+        return '<{} warns for {} in {} for reasons {}>'.format(
+            self.num_warns, self.user_id, self.chat_id, self.reasons,
         )
 
 
 class WarnFilters(BASE):
-    __tablename__ = "warn_filters"
+    __tablename__ = 'warn_filters'
     chat_id = Column(String(14), primary_key=True)
     keyword = Column(UnicodeText, primary_key=True, nullable=False)
     reply = Column(UnicodeText, nullable=False)
@@ -37,18 +37,18 @@ class WarnFilters(BASE):
         self.reply = reply
 
     def __repr__(self):
-        return "<Permissions for %s>" % self.chat_id
+        return '<Permissions for %s>' % self.chat_id
 
     def __eq__(self, other):
         return bool(
             isinstance(other, WarnFilters)
             and self.chat_id == other.chat_id
-            and self.keyword == other.keyword
+            and self.keyword == other.keyword,
         )
 
 
 class WarnSettings(BASE):
-    __tablename__ = "warn_settings"
+    __tablename__ = 'warn_settings'
     chat_id = Column(String(14), primary_key=True)
     warn_limit = Column(Integer, default=3)
     soft_warn = Column(Boolean, default=False)
@@ -59,7 +59,7 @@ class WarnSettings(BASE):
         self.soft_warn = soft_warn
 
     def __repr__(self):
-        return "<{} has {} possible warns.>".format(self.chat_id, self.warn_limit)
+        return f'<{self.chat_id} has {self.warn_limit} possible warns.>'
 
 
 Warns.__table__.create(checkfirst=True)
@@ -82,7 +82,7 @@ def warn_user(user_id, chat_id, reason=None):
         warned_user.num_warns += 1
         if reason:
             warned_user.reasons = warned_user.reasons + [
-                reason
+                reason,
             ]  # TODO:: double check this wizardry
 
         reasons = warned_user.reasons
@@ -169,7 +169,9 @@ def get_chat_warn_triggers(chat_id):
 def get_chat_warn_filters(chat_id):
     try:
         return (
-            SESSION.query(WarnFilters).filter(WarnFilters.chat_id == str(chat_id)).all()
+            SESSION.query(WarnFilters).filter(
+                WarnFilters.chat_id == str(chat_id),
+            ).all()
         )
     finally:
         SESSION.close()
@@ -280,7 +282,9 @@ def __load_chat_warn_filters():
 def migrate_chat(old_chat_id, new_chat_id):
     with WARN_INSERTION_LOCK:
         chat_notes = (
-            SESSION.query(Warns).filter(Warns.chat_id == str(old_chat_id)).all()
+            SESSION.query(Warns).filter(
+                Warns.chat_id == str(old_chat_id),
+            ).all()
         )
         for note in chat_notes:
             note.chat_id = str(new_chat_id)

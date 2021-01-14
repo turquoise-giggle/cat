@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, distinct, func
 
 
 class GroupLogs(BASE):
-    __tablename__ = "log_channels"
+    __tablename__ = 'log_channels'
     chat_id = Column(String(14), primary_key=True)
     log_channel = Column(String(14), nullable=False)
 

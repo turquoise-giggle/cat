@@ -19,16 +19,17 @@ class Types(IntEnum):
 def get_note_type(msg: Message):
     data_type = None
     content = None
-    text = ""
+    text = ''
     raw_text = msg.text or msg.caption
-    args = raw_text.split(None, 2)  # use python's maxsplit to separate cmd and args
+    # use python's maxsplit to separate cmd and args
+    args = raw_text.split(None, 2)
     note_name = args[1]
 
     buttons = []
     # determine what the contents of the filter are - text, image, sticker, etc
     if len(args) >= 3:
         offset = len(args[2]) - len(
-            raw_text
+            raw_text,
         )  # set correct offset relative to command + notename
         text, buttons = button_markdown_parser(
             args[2],
@@ -60,7 +61,8 @@ def get_note_type(msg: Message):
             data_type = Types.DOCUMENT
 
         elif msg.reply_to_message.photo:
-            content = msg.reply_to_message.photo[-1].file_id  # last elem = best quality
+            # last elem = best quality
+            content = msg.reply_to_message.photo[-1].file_id
             text, buttons = button_markdown_parser(msgtext, entities=entities)
             data_type = Types.PHOTO
 
@@ -86,7 +88,7 @@ def get_note_type(msg: Message):
 def get_welcome_type(msg: Message):
     data_type = None
     content = None
-    text = ""
+    text = ''
 
     try:
         if msg.reply_to_message:
@@ -96,7 +98,7 @@ def get_welcome_type(msg: Message):
                 args = msg.reply_to_message.caption
         else:
             args = msg.text.split(
-                None, 1
+                None, 1,
             )  # use python's maxsplit to separate cmd and args
     except AttributeError:
         args = False
@@ -112,7 +114,8 @@ def get_welcome_type(msg: Message):
         data_type = Types.DOCUMENT
 
     elif msg.reply_to_message and msg.reply_to_message.photo:
-        content = msg.reply_to_message.photo[-1].file_id  # last elem = best quality
+        # last elem = best quality
+        content = msg.reply_to_message.photo[-1].file_id
         text = msg.reply_to_message.caption
         data_type = Types.PHOTO
 
@@ -141,18 +144,18 @@ def get_welcome_type(msg: Message):
     if args:
         if msg.reply_to_message:
             argumen = (
-                msg.reply_to_message.caption if msg.reply_to_message.caption else ""
+                msg.reply_to_message.caption if msg.reply_to_message.caption else ''
             )
             offset = 0  # offset is no need since target was in reply
             entities = msg.reply_to_message.parse_entities()
         else:
             argumen = args[1]
             offset = len(argumen) - len(
-                msg.text
+                msg.text,
             )  # set correct offset relative to command + notename
             entities = msg.parse_entities()
         text, buttons = button_markdown_parser(
-            argumen, entities=entities, offset=offset
+            argumen, entities=entities, offset=offset,
         )
 
     if not data_type:
@@ -191,7 +194,8 @@ def get_filter_type(msg: Message):
         data_type = Types.DOCUMENT
 
     elif msg.reply_to_message and msg.reply_to_message.photo:
-        content = msg.reply_to_message.photo[-1].file_id  # last elem = best quality
+        # last elem = best quality
+        content = msg.reply_to_message.photo[-1].file_id
         text = msg.reply_to_message.caption
         data_type = Types.PHOTO
 

@@ -5,7 +5,7 @@ from sqlalchemy import Boolean, Column, Integer, String, UnicodeText
 
 
 class GloballyBannedUsers(BASE):
-    __tablename__ = "gbans"
+    __tablename__ = 'gbans'
     user_id = Column(Integer, primary_key=True)
     name = Column(UnicodeText, nullable=False)
     reason = Column(UnicodeText)
@@ -16,14 +16,14 @@ class GloballyBannedUsers(BASE):
         self.reason = reason
 
     def __repr__(self):
-        return "<GBanned User {} ({})>".format(self.name, self.user_id)
+        return f'<GBanned User {self.name} ({self.user_id})>'
 
     def to_dict(self):
-        return {"user_id": self.user_id, "name": self.name, "reason": self.reason}
+        return {'user_id': self.user_id, 'name': self.name, 'reason': self.reason}
 
 
 class GbanSettings(BASE):
-    __tablename__ = "gban_settings"
+    __tablename__ = 'gban_settings'
     chat_id = Column(String(14), primary_key=True)
     setting = Column(Boolean, default=True, nullable=False)
 
@@ -32,7 +32,7 @@ class GbanSettings(BASE):
         self.setting = enabled
 
     def __repr__(self):
-        return "<Gban setting {} ({})>".format(self.chat_id, self.setting)
+        return f'<Gban setting {self.chat_id} ({self.setting})>'
 
 
 GloballyBannedUsers.__table__.create(checkfirst=True)
@@ -136,7 +136,11 @@ def num_gbanned_users():
 def __load_gbanned_userid_list():
     global GBANNED_LIST
     try:
-        GBANNED_LIST = {x.user_id for x in SESSION.query(GloballyBannedUsers).all()}
+        GBANNED_LIST = {
+            x.user_id for x in SESSION.query(
+                GloballyBannedUsers,
+            ).all()
+        }
     finally:
         SESSION.close()
 

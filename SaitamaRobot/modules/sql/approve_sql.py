@@ -6,7 +6,7 @@ from SaitamaRobot.modules.sql import BASE, SESSION
 
 
 class Approvals(BASE):
-    __tablename__ = "approval"
+    __tablename__ = 'approval'
     chat_id = Column(String(14), primary_key=True)
     user_id = Column(Integer, primary_key=True)
 
@@ -15,7 +15,7 @@ class Approvals(BASE):
         self.user_id = user_id
 
     def __repr__(self):
-        return "<Approve %s>" % self.user_id
+        return '<Approve %s>' % self.user_id
 
 
 Approvals.__table__.create(checkfirst=True)

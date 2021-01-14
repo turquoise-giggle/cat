@@ -13,9 +13,9 @@ from pyrate_limiter import (
 )
 
 if ALLOW_EXCL:
-    CMD_STARTERS = ("/", "!")
+    CMD_STARTERS = ('/', '!')
 else:
-    CMD_STARTERS = ("/",)
+    CMD_STARTERS = ('/',)
 
 
 class AntiSpam:
@@ -87,7 +87,7 @@ class CustomCommandHandler(CommandHandler):
                 ):
 
                     args = message.text.split()[1:]
-                    command = fst_word[1:].split("@")
+                    command = fst_word[1:].split('@')
                     command.append(message.bot.username)
                     if user_id == 1087968824:
                         user_id = update.effective_chat.id
@@ -106,10 +106,14 @@ class CustomCommandHandler(CommandHandler):
 
     def handle_update(self, update, dispatcher, check_result, context=None):
         if context:
-            self.collect_additional_context(context, update, dispatcher, check_result)
+            self.collect_additional_context(
+                context, update, dispatcher, check_result,
+            )
             return self.callback(update, context)
         else:
-            optional_args = self.collect_optional_args(dispatcher, update, check_result)
+            optional_args = self.collect_optional_args(
+                dispatcher, update, check_result,
+            )
             return self.callback(dispatcher.bot, update, **optional_args)
 
     def collect_additional_context(self, context, update, dispatcher, check_result):
@@ -122,12 +126,12 @@ class CustomCommandHandler(CommandHandler):
 
 
 class CustomRegexHandler(RegexHandler):
-    def __init__(self, pattern, callback, friendly="", **kwargs):
+    def __init__(self, pattern, callback, friendly='', **kwargs):
         super().__init__(pattern, callback, **kwargs)
 
 
 class CustomMessageHandler(MessageHandler):
-    def __init__(self, filters, callback, friendly="", allow_edit=False, **kwargs):
+    def __init__(self, filters, callback, friendly='', allow_edit=False, **kwargs):
         super().__init__(filters, callback, **kwargs)
         if allow_edit is False:
             self.filters &= ~(

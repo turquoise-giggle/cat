@@ -6,7 +6,7 @@ from SaitamaRobot.modules.sql import SESSION, BASE
 
 
 class BlackListFilters(BASE):
-    __tablename__ = "blacklist"
+    __tablename__ = 'blacklist'
     chat_id = Column(String(14), primary_key=True)
     trigger = Column(UnicodeText, primary_key=True, nullable=False)
 
@@ -15,30 +15,30 @@ class BlackListFilters(BASE):
         self.trigger = trigger
 
     def __repr__(self):
-        return "<Blacklist filter '%s' for %s>" % (self.trigger, self.chat_id)
+        return f"<Blacklist filter '{self.trigger}' for {self.chat_id}>"
 
     def __eq__(self, other):
         return bool(
             isinstance(other, BlackListFilters)
             and self.chat_id == other.chat_id
-            and self.trigger == other.trigger
+            and self.trigger == other.trigger,
         )
 
 
 class BlacklistSettings(BASE):
-    __tablename__ = "blacklist_settings"
+    __tablename__ = 'blacklist_settings'
     chat_id = Column(String(14), primary_key=True)
     blacklist_type = Column(Integer, default=1)
-    value = Column(UnicodeText, default="0")
+    value = Column(UnicodeText, default='0')
 
-    def __init__(self, chat_id, blacklist_type=1, value="0"):
+    def __init__(self, chat_id, blacklist_type=1, value='0'):
         self.chat_id = str(chat_id)
         self.blacklist_type = blacklist_type
         self.value = value
 
     def __repr__(self):
-        return "<{} will executing {} for blacklist trigger.>".format(
-            self.chat_id, self.blacklist_type
+        return '<{} will executing {} for blacklist trigger.>'.format(
+            self.chat_id, self.blacklist_type,
         )
 
 
@@ -67,9 +67,12 @@ def add_to_blacklist(chat_id, trigger):
 
 def rm_from_blacklist(chat_id, trigger):
     with BLACKLIST_FILTER_INSERTION_LOCK:
-        blacklist_filt = SESSION.query(BlackListFilters).get((str(chat_id), trigger))
+        blacklist_filt = SESSION.query(
+            BlackListFilters,
+        ).get((str(chat_id), trigger))
         if blacklist_filt:
-            if trigger in CHAT_BLACKLISTS.get(str(chat_id), set()):  # sanity check
+            # sanity check
+            if trigger in CHAT_BLACKLISTS.get(str(chat_id), set()):
                 CHAT_BLACKLISTS.get(str(chat_id), set()).remove(trigger)
 
             SESSION.delete(blacklist_filt)
@@ -124,14 +127,14 @@ def set_blacklist_strength(chat_id, blacklist_type, value):
         curr_setting = SESSION.query(BlacklistSettings).get(str(chat_id))
         if not curr_setting:
             curr_setting = BlacklistSettings(
-                chat_id, blacklist_type=int(blacklist_type), value=value
+                chat_id, blacklist_type=int(blacklist_type), value=value,
             )
 
         curr_setting.blacklist_type = int(blacklist_type)
         curr_setting.value = str(value)
         CHAT_SETTINGS_BLACKLISTS[str(chat_id)] = {
-            "blacklist_type": int(blacklist_type),
-            "value": value,
+            'blacklist_type': int(blacklist_type),
+            'value': value,
         }
 
         SESSION.add(curr_setting)
@@ -142,9 +145,9 @@ def get_blacklist_setting(chat_id):
     try:
         setting = CHAT_SETTINGS_BLACKLISTS.get(str(chat_id))
         if setting:
-            return setting["blacklist_type"], setting["value"]
+            return setting['blacklist_type'], setting['value']
         else:
-            return 1, "0"
+            return 1, '0'
 
     finally:
         SESSION.close()
@@ -173,8 +176,8 @@ def __load_chat_settings_blacklists():
         chats_settings = SESSION.query(BlacklistSettings).all()
         for x in chats_settings:  # remove tuple by ( ,)
             CHAT_SETTINGS_BLACKLISTS[x.chat_id] = {
-                "blacklist_type": x.blacklist_type,
-                "value": x.value,
+                'blacklist_type': x.blacklist_type,
+                'value': x.value,
             }
 
     finally:
