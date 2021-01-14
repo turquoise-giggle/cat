@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, UnicodeText
 
 
 class RSS(BASE):
-    __tablename__ = 'rss_feed'
+    __tablename__ = "rss_feed"
     id = Column(Integer, primary_key=True)
     chat_id = Column(UnicodeText, nullable=False)
     feed_link = Column(UnicodeText)
@@ -17,8 +17,10 @@ class RSS(BASE):
         self.old_entry_link = old_entry_link
 
     def __repr__(self):
-        return '<RSS for chatID {} at feed_link {} with old_entry_link {}>'.format(
-            self.chat_id, self.feed_link, self.old_entry_link,
+        return "<RSS for chatID {} at feed_link {} with old_entry_link {}>".format(
+            self.chat_id,
+            self.feed_link,
+            self.old_entry_link,
         )
 
 

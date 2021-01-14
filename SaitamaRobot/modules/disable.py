@@ -15,7 +15,7 @@ from telegram.ext import (
 )
 from telegram.utils.helpers import escape_markdown
 
-FILENAME = __name__.rsplit('.', 1)[-1]
+FILENAME = __name__.rsplit(".", 1)[-1]
 
 # If module is due to be loaded, then setup all the magical handlers
 if is_module_loaded(FILENAME):
@@ -55,7 +55,7 @@ if is_module_loaded(FILENAME):
                         fst_word.startswith(start) for start in CMD_STARTERS
                     ):
                         args = message.text.split()[1:]
-                        command = fst_word[1:].split('@')
+                        command = fst_word[1:].split("@")
                         command.append(message.bot.username)
 
                         if not (
@@ -117,7 +117,7 @@ if is_module_loaded(FILENAME):
                     return args, filter_result
 
     class DisableAbleRegexHandler(RegexHandler):
-        def __init__(self, pattern, callback, friendly='', filters=None, **kwargs):
+        def __init__(self, pattern, callback, friendly="", filters=None, **kwargs):
             super().__init__(pattern, callback, filters, **kwargs)
             DISABLE_OTHER.append(friendly)
             self.friendly = friendly
@@ -144,7 +144,7 @@ if is_module_loaded(FILENAME):
             if disable_cmd in set(DISABLE_CMDS + DISABLE_OTHER):
                 sql.disable_command(chat.id, str(disable_cmd).lower())
                 update.effective_message.reply_text(
-                    f'Disabled the use of `{disable_cmd}`',
+                    f"Disabled the use of `{disable_cmd}`",
                     parse_mode=ParseMode.MARKDOWN,
                 )
             else:
@@ -153,7 +153,7 @@ if is_module_loaded(FILENAME):
                 )
 
         else:
-            update.effective_message.reply_text('What should I disable?')
+            update.effective_message.reply_text("What should I disable?")
 
     @run_async
     @connection_status
@@ -162,14 +162,13 @@ if is_module_loaded(FILENAME):
         args = context.args
         chat = update.effective_chat
         if len(args) >= 1:
-            disable_module = 'SaitamaRobot.modules.' + \
-                args[0].rsplit('.', 1)[0]
+            disable_module = "SaitamaRobot.modules." + args[0].rsplit(".", 1)[0]
 
             try:
                 module = importlib.import_module(disable_module)
             except:
                 update.effective_message.reply_text(
-                    'Does that module even exist?',
+                    "Does that module even exist?",
                 )
                 return
 
@@ -177,7 +176,7 @@ if is_module_loaded(FILENAME):
                 command_list = module.__command_list__
             except:
                 update.effective_message.reply_text(
-                    'Module does not contain command list!',
+                    "Module does not contain command list!",
                 )
                 return
 
@@ -195,21 +194,21 @@ if is_module_loaded(FILENAME):
                     failed_disabled_cmds.append(disable_cmd)
 
             if disabled_cmds:
-                disabled_cmds_string = ', '.join(disabled_cmds)
+                disabled_cmds_string = ", ".join(disabled_cmds)
                 update.effective_message.reply_text(
-                    f'Disabled the uses of `{disabled_cmds_string}`',
+                    f"Disabled the uses of `{disabled_cmds_string}`",
                     parse_mode=ParseMode.MARKDOWN,
                 )
 
             if failed_disabled_cmds:
-                failed_disabled_cmds_string = ', '.join(failed_disabled_cmds)
+                failed_disabled_cmds_string = ", ".join(failed_disabled_cmds)
                 update.effective_message.reply_text(
                     f"Commands `{failed_disabled_cmds_string}` can't be disabled",
                     parse_mode=ParseMode.MARKDOWN,
                 )
 
         else:
-            update.effective_message.reply_text('What should I disable?')
+            update.effective_message.reply_text("What should I disable?")
 
     @run_async
     @connection_status
@@ -224,13 +223,14 @@ if is_module_loaded(FILENAME):
 
             if sql.enable_command(chat.id, enable_cmd):
                 update.effective_message.reply_text(
-                    f'Enabled the use of `{enable_cmd}`', parse_mode=ParseMode.MARKDOWN,
+                    f"Enabled the use of `{enable_cmd}`",
+                    parse_mode=ParseMode.MARKDOWN,
                 )
             else:
-                update.effective_message.reply_text('Is that even disabled?')
+                update.effective_message.reply_text("Is that even disabled?")
 
         else:
-            update.effective_message.reply_text('What should I enable?')
+            update.effective_message.reply_text("What should I enable?")
 
     @run_async
     @connection_status
@@ -240,13 +240,13 @@ if is_module_loaded(FILENAME):
         chat = update.effective_chat
 
         if len(args) >= 1:
-            enable_module = 'SaitamaRobot.modules.' + args[0].rsplit('.', 1)[0]
+            enable_module = "SaitamaRobot.modules." + args[0].rsplit(".", 1)[0]
 
             try:
                 module = importlib.import_module(enable_module)
             except:
                 update.effective_message.reply_text(
-                    'Does that module even exist?',
+                    "Does that module even exist?",
                 )
                 return
 
@@ -254,7 +254,7 @@ if is_module_loaded(FILENAME):
                 command_list = module.__command_list__
             except:
                 update.effective_message.reply_text(
-                    'Module does not contain command list!',
+                    "Module does not contain command list!",
                 )
                 return
 
@@ -271,58 +271,59 @@ if is_module_loaded(FILENAME):
                     failed_enabled_cmds.append(enable_cmd)
 
             if enabled_cmds:
-                enabled_cmds_string = ', '.join(enabled_cmds)
+                enabled_cmds_string = ", ".join(enabled_cmds)
                 update.effective_message.reply_text(
-                    f'Enabled the uses of `{enabled_cmds_string}`',
+                    f"Enabled the uses of `{enabled_cmds_string}`",
                     parse_mode=ParseMode.MARKDOWN,
                 )
 
             if failed_enabled_cmds:
-                failed_enabled_cmds_string = ', '.join(failed_enabled_cmds)
+                failed_enabled_cmds_string = ", ".join(failed_enabled_cmds)
                 update.effective_message.reply_text(
-                    f'Are the commands `{failed_enabled_cmds_string}` even disabled?',
+                    f"Are the commands `{failed_enabled_cmds_string}` even disabled?",
                     parse_mode=ParseMode.MARKDOWN,
                 )
 
         else:
-            update.effective_message.reply_text('What should I enable?')
+            update.effective_message.reply_text("What should I enable?")
 
     @run_async
     @connection_status
     @user_admin
     def list_cmds(update: Update, context: CallbackContext):
         if DISABLE_CMDS + DISABLE_OTHER:
-            result = ''
+            result = ""
             for cmd in set(DISABLE_CMDS + DISABLE_OTHER):
-                result += f' - `{escape_markdown(cmd)}`\n'
+                result += f" - `{escape_markdown(cmd)}`\n"
             update.effective_message.reply_text(
-                f'The following commands are toggleable:\n{result}',
+                f"The following commands are toggleable:\n{result}",
                 parse_mode=ParseMode.MARKDOWN,
             )
         else:
-            update.effective_message.reply_text('No commands can be disabled.')
+            update.effective_message.reply_text("No commands can be disabled.")
 
     # do not async
     def build_curr_disabled(chat_id: Union[str, int]) -> str:
         disabled = sql.get_all_disabled(chat_id)
         if not disabled:
-            return 'No commands are disabled!'
+            return "No commands are disabled!"
 
-        result = ''
+        result = ""
         for cmd in disabled:
-            result += ' - `{}`\n'.format(escape_markdown(cmd))
-        return f'The following commands are currently restricted:\n{result}'
+            result += " - `{}`\n".format(escape_markdown(cmd))
+        return f"The following commands are currently restricted:\n{result}"
 
     @run_async
     @connection_status
     def commands(update: Update, context: CallbackContext):
         chat = update.effective_chat
         update.effective_message.reply_text(
-            build_curr_disabled(chat.id), parse_mode=ParseMode.MARKDOWN,
+            build_curr_disabled(chat.id),
+            parse_mode=ParseMode.MARKDOWN,
         )
 
     def __stats__():
-        return f'• {sql.num_disabled()} disabled items, across {sql.num_chats()} chats.'
+        return f"• {sql.num_disabled()} disabled items, across {sql.num_chats()} chats."
 
     def __migrate__(old_chat_id, new_chat_id):
         sql.migrate_chat(old_chat_id, new_chat_id)
@@ -330,12 +331,12 @@ if is_module_loaded(FILENAME):
     def __chat_settings__(chat_id, user_id):
         return build_curr_disabled(chat_id)
 
-    DISABLE_HANDLER = CommandHandler('disable', disable)
-    DISABLE_MODULE_HANDLER = CommandHandler('disablemodule', disable_module)
-    ENABLE_HANDLER = CommandHandler('enable', enable)
-    ENABLE_MODULE_HANDLER = CommandHandler('enablemodule', enable_module)
-    COMMANDS_HANDLER = CommandHandler(['cmds', 'disabled'], commands)
-    TOGGLE_HANDLER = CommandHandler('listcmds', list_cmds)
+    DISABLE_HANDLER = CommandHandler("disable", disable)
+    DISABLE_MODULE_HANDLER = CommandHandler("disablemodule", disable_module)
+    ENABLE_HANDLER = CommandHandler("enable", enable)
+    ENABLE_MODULE_HANDLER = CommandHandler("enablemodule", enable_module)
+    COMMANDS_HANDLER = CommandHandler(["cmds", "disabled"], commands)
+    TOGGLE_HANDLER = CommandHandler("listcmds", list_cmds)
 
     dispatcher.add_handler(DISABLE_HANDLER)
     dispatcher.add_handler(DISABLE_MODULE_HANDLER)
@@ -355,7 +356,7 @@ if is_module_loaded(FILENAME):
     • `/listcmds`*:* list all possible toggleable commands
     """
 
-    __mod_name__ = 'Command disabling'
+    __mod_name__ = "Command disabling"
 
 else:
     DisableAbleCommandHandler = CommandHandler

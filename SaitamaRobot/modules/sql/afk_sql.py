@@ -5,19 +5,19 @@ from sqlalchemy import Boolean, Column, Integer, UnicodeText
 
 
 class AFK(BASE):
-    __tablename__ = 'afk_users'
+    __tablename__ = "afk_users"
 
     user_id = Column(Integer, primary_key=True)
     is_afk = Column(Boolean)
     reason = Column(UnicodeText)
 
-    def __init__(self, user_id, reason='', is_afk=True):
+    def __init__(self, user_id, reason="", is_afk=True):
         self.user_id = user_id
         self.reason = reason
         self.is_afk = is_afk
 
     def __repr__(self):
-        return f'afk_status for {self.user_id}'
+        return f"afk_status for {self.user_id}"
 
 
 AFK.__table__.create(checkfirst=True)
@@ -37,7 +37,7 @@ def check_afk_status(user_id):
         SESSION.close()
 
 
-def set_afk(user_id, reason=''):
+def set_afk(user_id, reason=""):
     with INSERTION_LOCK:
         curr = SESSION.query(AFK).get(user_id)
         if not curr:
@@ -66,7 +66,7 @@ def rm_afk(user_id):
         return False
 
 
-def toggle_afk(user_id, reason=''):
+def toggle_afk(user_id, reason=""):
     with INSERTION_LOCK:
         curr = SESSION.query(AFK).get(user_id)
         if not curr:
@@ -83,9 +83,7 @@ def __load_afk_users():
     global AFK_USERS
     try:
         all_afk = SESSION.query(AFK).all()
-        AFK_USERS = {
-            user.user_id: user.reason for user in all_afk if user.is_afk
-        }
+        AFK_USERS = {user.user_id: user.reason for user in all_afk if user.is_afk}
     finally:
         SESSION.close()
 

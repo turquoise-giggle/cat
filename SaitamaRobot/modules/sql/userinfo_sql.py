@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, UnicodeText
 
 
 class UserInfo(BASE):
-    __tablename__ = 'userinfo'
+    __tablename__ = "userinfo"
     user_id = Column(Integer, primary_key=True)
     info = Column(UnicodeText)
 
@@ -14,11 +14,11 @@ class UserInfo(BASE):
         self.info = info
 
     def __repr__(self):
-        return '<User info %d>' % self.user_id
+        return "<User info %d>" % self.user_id
 
 
 class UserBio(BASE):
-    __tablename__ = 'userbio'
+    __tablename__ = "userbio"
     user_id = Column(Integer, primary_key=True)
     bio = Column(UnicodeText)
 
@@ -27,7 +27,7 @@ class UserBio(BASE):
         self.bio = bio
 
     def __repr__(self):
-        return '<User info %d>' % self.user_id
+        return "<User info %d>" % self.user_id
 
 
 UserInfo.__table__.create(checkfirst=True)

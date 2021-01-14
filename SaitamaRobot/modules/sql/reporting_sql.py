@@ -6,7 +6,7 @@ from sqlalchemy import Boolean, Column, Integer, String
 
 
 class ReportingUserSettings(BASE):
-    __tablename__ = 'user_report_settings'
+    __tablename__ = "user_report_settings"
     user_id = Column(Integer, primary_key=True)
     should_report = Column(Boolean, default=True)
 
@@ -14,11 +14,11 @@ class ReportingUserSettings(BASE):
         self.user_id = user_id
 
     def __repr__(self):
-        return f'<User report settings ({self.user_id})>'
+        return f"<User report settings ({self.user_id})>"
 
 
 class ReportingChatSettings(BASE):
-    __tablename__ = 'chat_report_settings'
+    __tablename__ = "chat_report_settings"
     chat_id = Column(String(14), primary_key=True)
     should_report = Column(Boolean, default=True)
 
@@ -26,7 +26,7 @@ class ReportingChatSettings(BASE):
         self.chat_id = str(chat_id)
 
     def __repr__(self):
-        return f'<Chat report settings ({self.chat_id})>'
+        return f"<Chat report settings ({self.chat_id})>"
 
 
 ReportingUserSettings.__table__.create(checkfirst=True)

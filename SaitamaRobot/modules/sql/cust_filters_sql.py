@@ -7,7 +7,7 @@ from SaitamaRobot.modules.sql import BASE, SESSION
 
 
 class CustomFilters(BASE):
-    __tablename__ = 'cust_filters'
+    __tablename__ = "cust_filters"
     chat_id = Column(String(14), primary_key=True)
     keyword = Column(UnicodeText, primary_key=True, nullable=False)
     reply = Column(UnicodeText, nullable=False)
@@ -63,7 +63,7 @@ class CustomFilters(BASE):
         self.file_id = file_id
 
     def __repr__(self):
-        return '<Permissions for %s>' % self.chat_id
+        return "<Permissions for %s>" % self.chat_id
 
     def __eq__(self, other):
         return bool(
@@ -74,7 +74,7 @@ class CustomFilters(BASE):
 
 
 class NewCustomFilters(BASE):
-    __tablename__ = 'cust_filters_new'
+    __tablename__ = "cust_filters_new"
     chat_id = Column(String(14), primary_key=True)
     keyword = Column(UnicodeText, primary_key=True, nullable=False)
     text = Column(UnicodeText)
@@ -89,7 +89,7 @@ class NewCustomFilters(BASE):
         self.file_id = file_id
 
     def __repr__(self):
-        return '<Filter for %s>' % self.chat_id
+        return "<Filter for %s>" % self.chat_id
 
     def __eq__(self, other):
         return bool(
@@ -100,7 +100,7 @@ class NewCustomFilters(BASE):
 
 
 class Buttons(BASE):
-    __tablename__ = 'cust_filter_urls'
+    __tablename__ = "cust_filter_urls"
     id = Column(Integer, primary_key=True, autoincrement=True)
     chat_id = Column(String(14), primary_key=True)
     keyword = Column(UnicodeText, primary_key=True)
@@ -209,7 +209,7 @@ def new_add_filter(chat_id, keyword, reply_text, file_type, file_id, buttons):
         filt = CustomFilters(
             str(chat_id),
             keyword,
-            reply='there is should be a new reply',
+            reply="there is should be a new reply",
             is_sticker=False,
             is_document=False,
             is_image=False,
@@ -360,11 +360,19 @@ def __migrate_filters():
             print(str(x.chat_id), x.keyword, x.reply, file_type.value)
             if file_type == Types.TEXT:
                 filt = CustomFilters(
-                    str(x.chat_id), x.keyword, x.reply, file_type.value, None,
+                    str(x.chat_id),
+                    x.keyword,
+                    x.reply,
+                    file_type.value,
+                    None,
                 )
             else:
                 filt = CustomFilters(
-                    str(x.chat_id), x.keyword, None, file_type.value, x.reply,
+                    str(x.chat_id),
+                    x.keyword,
+                    None,
+                    file_type.value,
+                    x.reply,
                 )
 
             SESSION.add(filt)
@@ -391,9 +399,11 @@ def migrate_chat(old_chat_id, new_chat_id):
 
         with BUTTON_LOCK:
             chat_buttons = (
-                SESSION.query(Buttons).filter(
+                SESSION.query(Buttons)
+                .filter(
                     Buttons.chat_id == str(old_chat_id),
-                ).all()
+                )
+                .all()
             )
             for btn in chat_buttons:
                 btn.chat_id = str(new_chat_id)

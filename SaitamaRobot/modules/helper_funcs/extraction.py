@@ -13,7 +13,7 @@ def id_from_reply(message):
     user_id = prev_message.from_user.id
     res = message.text.split(None, 1)
     if len(res) < 2:
-        return user_id, ''
+        return user_id, ""
     return user_id, res[1]
 
 
@@ -22,7 +22,8 @@ def extract_user(message: Message, args: List[str]) -> Optional[int]:
 
 
 def extract_user_and_text(
-    message: Message, args: List[str],
+    message: Message,
+    args: List[str],
 ) -> (Optional[int], Optional[str]):
     prev_message = message.reply_to_message
     split_text = message.text.split(None, 1)
@@ -32,7 +33,7 @@ def extract_user_and_text(
 
     text_to_parse = split_text[1]
 
-    text = ''
+    text = ""
 
     entities = list(message.parse_entities([MessageEntity.TEXT_MENTION]))
     ent = entities[0] if entities else None
@@ -40,9 +41,9 @@ def extract_user_and_text(
     if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
-        text = message.text[ent.offset + ent.length:]
+        text = message.text[ent.offset + ent.length :]
 
-    elif len(args) >= 1 and args[0][0] == '@':
+    elif len(args) >= 1 and args[0][0] == "@":
         user = args[0]
         user_id = get_user_id(user)
         if not user_id:
@@ -73,14 +74,14 @@ def extract_user_and_text(
     try:
         message.bot.get_chat(user_id)
     except BadRequest as excp:
-        if excp.message in ('User_id_invalid', 'Chat not found'):
+        if excp.message in ("User_id_invalid", "Chat not found"):
             message.reply_text(
                 "I don't seem to have interacted with this user before - please forward a message from "
-                'them to give me control! (like a voodoo doll, I need a piece of them to be able '
-                'to execute certain commands...)',
+                "them to give me control! (like a voodoo doll, I need a piece of them to be able "
+                "to execute certain commands...)",
             )
         else:
-            LOGGER.exception('Exception %s on user %s', excp.message, user_id)
+            LOGGER.exception("Exception %s on user %s", excp.message, user_id)
 
         return None, None
 
@@ -96,7 +97,8 @@ def extract_text(message) -> str:
 
 
 def extract_unt_fedban(
-    message: Message, args: List[str],
+    message: Message,
+    args: List[str],
 ) -> (Optional[int], Optional[str]):
     prev_message = message.reply_to_message
     split_text = message.text.split(None, 1)
@@ -106,7 +108,7 @@ def extract_unt_fedban(
 
     text_to_parse = split_text[1]
 
-    text = ''
+    text = ""
 
     entities = list(message.parse_entities([MessageEntity.TEXT_MENTION]))
     ent = entities[0] if entities else None
@@ -114,9 +116,9 @@ def extract_unt_fedban(
     if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
-        text = message.text[ent.offset + ent.length:]
+        text = message.text[ent.offset + ent.length :]
 
-    elif len(args) >= 1 and args[0][0] == '@':
+    elif len(args) >= 1 and args[0][0] == "@":
         user = args[0]
         user_id = get_user_id(user)
         if not user_id and not isinstance(user_id, int):
@@ -147,17 +149,18 @@ def extract_unt_fedban(
     try:
         message.bot.get_chat(user_id)
     except BadRequest as excp:
-        if excp.message in ('User_id_invalid', 'Chat not found') and not isinstance(
-            user_id, int,
+        if excp.message in ("User_id_invalid", "Chat not found") and not isinstance(
+            user_id,
+            int,
         ):
             message.reply_text(
                 "I don't seem to have interacted with this user before "
-                'please forward a message from them to give me control! '
-                '(like a voodoo doll, I need a piece of them to be able to execute certain commands...)',
+                "please forward a message from them to give me control! "
+                "(like a voodoo doll, I need a piece of them to be able to execute certain commands...)",
             )
             return None, None
-        elif excp.message != 'Chat not found':
-            LOGGER.exception('Exception %s on user %s', excp.message, user_id)
+        elif excp.message != "Chat not found":
+            LOGGER.exception("Exception %s on user %s", excp.message, user_id)
             return None, None
         elif not isinstance(user_id, int):
             return None, None

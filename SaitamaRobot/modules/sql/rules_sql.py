@@ -5,15 +5,15 @@ from sqlalchemy import Column, String, UnicodeText, distinct, func
 
 
 class Rules(BASE):
-    __tablename__ = 'rules'
+    __tablename__ = "rules"
     chat_id = Column(String(14), primary_key=True)
-    rules = Column(UnicodeText, default='')
+    rules = Column(UnicodeText, default="")
 
     def __init__(self, chat_id):
         self.chat_id = chat_id
 
     def __repr__(self):
-        return f'<Chat {self.chat_id} rules: {self.rules}>'
+        return f"<Chat {self.chat_id} rules: {self.rules}>"
 
 
 Rules.__table__.create(checkfirst=True)
@@ -34,7 +34,7 @@ def set_rules(chat_id, rules_text):
 
 def get_rules(chat_id):
     rules = SESSION.query(Rules).get(str(chat_id))
-    ret = ''
+    ret = ""
     if rules:
         ret = rules.rules
 

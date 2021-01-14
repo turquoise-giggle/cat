@@ -19,56 +19,55 @@ def debug(update: Update, context: CallbackContext):
     message = update.effective_message
     print(DEBUG_MODE)
     if len(args) > 1:
-        if args[1] in ('yes', 'on'):
+        if args[1] in ("yes", "on"):
             DEBUG_MODE = True
-            message.reply_text('Debug mode is now on.')
-        elif args[1] in ('no', 'off'):
+            message.reply_text("Debug mode is now on.")
+        elif args[1] in ("no", "off"):
             DEBUG_MODE = False
-            message.reply_text('Debug mode is now off.')
+            message.reply_text("Debug mode is now off.")
     else:
         if DEBUG_MODE:
-            message.reply_text('Debug mode is currently on.')
+            message.reply_text("Debug mode is currently on.")
         else:
-            message.reply_text('Debug mode is currently off.')
+            message.reply_text("Debug mode is currently off.")
 
 
-@telethn.on(events.NewMessage(pattern='[/!].*'))
+@telethn.on(events.NewMessage(pattern="[/!].*"))
 async def i_do_nothing_yes(event):
     global DEBUG_MODE
     if DEBUG_MODE:
-        print(f'-{event.from_id} ({event.chat_id}) : {event.text}')
-        if os.path.exists('updates.txt'):
-            with open('updates.txt') as f:
+        print(f"-{event.from_id} ({event.chat_id}) : {event.text}")
+        if os.path.exists("updates.txt"):
+            with open("updates.txt") as f:
                 text = f.read()
-            with open('updates.txt', 'w+') as f:
+            with open("updates.txt", "w+") as f:
                 f.write(
-                    text +
-                    f'\n-{event.from_id} ({event.chat_id}) : {event.text}',
+                    text + f"\n-{event.from_id} ({event.chat_id}) : {event.text}",
                 )
         else:
-            with open('updates.txt', 'w+') as f:
+            with open("updates.txt", "w+") as f:
                 f.write(
-                    f'- {event.from_id} ({event.chat_id}) : {event.text} | {datetime.datetime.now()}',
+                    f"- {event.from_id} ({event.chat_id}) : {event.text} | {datetime.datetime.now()}",
                 )
 
 
-support_chat = os.getenv('SUPPORT_CHAT')
+support_chat = os.getenv("SUPPORT_CHAT")
 
 
 @run_async
 @dev_plus
 def logs(update: Update, context: CallbackContext):
     user = update.effective_user
-    with open('log.txt', 'rb') as f:
+    with open("log.txt", "rb") as f:
         context.bot.send_document(document=f, filename=f.name, chat_id=user.id)
 
 
-LOG_HANDLER = CommandHandler('logs', logs)
+LOG_HANDLER = CommandHandler("logs", logs)
 dispatcher.add_handler(LOG_HANDLER)
 
-DEBUG_HANDLER = CommandHandler('debug', debug)
+DEBUG_HANDLER = CommandHandler("debug", debug)
 dispatcher.add_handler(DEBUG_HANDLER)
 
-__mod_name__ = 'Debug'
-__command_list__ = ['debug']
+__mod_name__ = "Debug"
+__command_list__ = ["debug"]
 __handlers__ = [DEBUG_HANDLER]

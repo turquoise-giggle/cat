@@ -26,7 +26,7 @@ def get_user_id(username):
     if len(username) <= 5:
         return None
 
-    if username.startswith('@'):
+    if username.startswith("@"):
         username = username[1:]
 
     users = sql.get_userid_by_name(username)
@@ -45,10 +45,10 @@ def get_user_id(username):
                     return userdat.id
 
             except BadRequest as excp:
-                if excp.message == 'Chat not found':
+                if excp.message == "Chat not found":
                     pass
                 else:
-                    LOGGER.exception('Error extracting user ID')
+                    LOGGER.exception("Error extracting user ID")
 
     return None
 
@@ -61,9 +61,9 @@ def broadcast(update: Update, context: CallbackContext):
     if len(to_send) >= 2:
         to_group = False
         to_user = False
-        if to_send[0] == '/broadcastgroups':
+        if to_send[0] == "/broadcastgroups":
             to_group = True
-        if to_send[0] == '/broadcastusers':
+        if to_send[0] == "/broadcastusers":
             to_user = True
         else:
             to_group = to_user = True
@@ -77,7 +77,7 @@ def broadcast(update: Update, context: CallbackContext):
                     context.bot.sendMessage(
                         int(chat.chat_id),
                         to_send[1],
-                        parse_mode='MARKDOWN',
+                        parse_mode="MARKDOWN",
                         disable_web_page_preview=True,
                     )
                     sleep(0.1)
@@ -89,14 +89,14 @@ def broadcast(update: Update, context: CallbackContext):
                     context.bot.sendMessage(
                         int(user.user_id),
                         to_send[1],
-                        parse_mode='MARKDOWN',
+                        parse_mode="MARKDOWN",
                         disable_web_page_preview=True,
                     )
                     sleep(0.1)
                 except TelegramError:
                     failed_user += 1
         update.effective_message.reply_text(
-            f'Broadcast complete.\nGroups failed: {failed}.\nUsers failed: {failed_user}.',
+            f"Broadcast complete.\nGroups failed: {failed}.\nUsers failed: {failed_user}.",
         )
 
 
@@ -106,8 +106,10 @@ def log_user(update: Update, context: CallbackContext):
     msg = update.effective_message
 
     sql.update_user(
-        msg.from_user.id, msg.from_user.username,
-        chat.id, chat.title,
+        msg.from_user.id,
+        msg.from_user.username,
+        chat.id,
+        chat.title,
     )
 
     if msg.reply_to_message:
@@ -126,26 +128,29 @@ def log_user(update: Update, context: CallbackContext):
 @sudo_plus
 def chats(update: Update, context: CallbackContext):
     all_chats = sql.get_all_chats() or []
-    chatfile = 'List of chats.\n0. Chat name | Chat ID | Members count\n'
+    chatfile = "List of chats.\n0. Chat name | Chat ID | Members count\n"
     P = 1
     for chat in all_chats:
         try:
             curr_chat = context.bot.getChat(chat.chat_id)
             bot_member = curr_chat.get_member(context.bot.id)
             chat_members = curr_chat.get_members_count(context.bot.id)
-            chatfile += '{}. {} | {} | {}\n'.format(
-                P, chat.chat_name, chat.chat_id, chat_members,
+            chatfile += "{}. {} | {} | {}\n".format(
+                P,
+                chat.chat_name,
+                chat.chat_id,
+                chat_members,
             )
             P = P + 1
         except:
             pass
 
     with BytesIO(str.encode(chatfile)) as output:
-        output.name = 'groups_list.txt'
+        output.name = "groups_list.txt"
         update.effective_message.reply_document(
             document=output,
-            filename='groups_list.txt',
-            caption='Here be the list of groups in my database.',
+            filename="groups_list.txt",
+            caption="Here be the list of groups in my database.",
         )
 
 
@@ -169,31 +174,34 @@ def __user_info__(user_id):
 
 
 def __stats__():
-    return f'• {sql.num_users()} users, across {sql.num_chats()} chats'
+    return f"• {sql.num_users()} users, across {sql.num_chats()} chats"
 
 
 def __migrate__(old_chat_id, new_chat_id):
     sql.migrate_chat(old_chat_id, new_chat_id)
 
 
-__help__ = ''  # no help string
+__help__ = ""  # no help string
 
 BROADCAST_HANDLER = CommandHandler(
-    ['broadcastall', 'broadcastusers', 'broadcastgroups'], broadcast,
+    ["broadcastall", "broadcastusers", "broadcastgroups"],
+    broadcast,
 )
 USER_HANDLER = MessageHandler(Filters.all & Filters.group, log_user)
 CHAT_CHECKER_HANDLER = MessageHandler(
-    Filters.all & Filters.group, chat_checker,
+    Filters.all & Filters.group,
+    chat_checker,
 )
-CHATLIST_HANDLER = CommandHandler('groups', chats)
+CHATLIST_HANDLER = CommandHandler("groups", chats)
 
 dispatcher.add_handler(USER_HANDLER, USERS_GROUP)
 dispatcher.add_handler(BROADCAST_HANDLER)
 dispatcher.add_handler(CHATLIST_HANDLER)
 dispatcher.add_handler(CHAT_CHECKER_HANDLER, CHAT_GROUP)
 
-__mod_name__ = 'Users'
+__mod_name__ = "Users"
 __handlers__ = [
     (USER_HANDLER, USERS_GROUP),
-    BROADCAST_HANDLER, CHATLIST_HANDLER,
+    BROADCAST_HANDLER,
+    CHATLIST_HANDLER,
 ]

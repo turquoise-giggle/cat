@@ -19,7 +19,7 @@ class Types(IntEnum):
 def get_note_type(msg: Message):
     data_type = None
     content = None
-    text = ''
+    text = ""
     raw_text = msg.text or msg.caption
     # use python's maxsplit to separate cmd and args
     args = raw_text.split(None, 2)
@@ -88,7 +88,7 @@ def get_note_type(msg: Message):
 def get_welcome_type(msg: Message):
     data_type = None
     content = None
-    text = ''
+    text = ""
 
     try:
         if msg.reply_to_message:
@@ -98,7 +98,8 @@ def get_welcome_type(msg: Message):
                 args = msg.reply_to_message.caption
         else:
             args = msg.text.split(
-                None, 1,
+                None,
+                1,
             )  # use python's maxsplit to separate cmd and args
     except AttributeError:
         args = False
@@ -144,7 +145,7 @@ def get_welcome_type(msg: Message):
     if args:
         if msg.reply_to_message:
             argumen = (
-                msg.reply_to_message.caption if msg.reply_to_message.caption else ''
+                msg.reply_to_message.caption if msg.reply_to_message.caption else ""
             )
             offset = 0  # offset is no need since target was in reply
             entities = msg.reply_to_message.parse_entities()
@@ -155,7 +156,9 @@ def get_welcome_type(msg: Message):
             )  # set correct offset relative to command + notename
             entities = msg.parse_entities()
         text, buttons = button_markdown_parser(
-            argumen, entities=entities, offset=offset,
+            argumen,
+            entities=entities,
+            offset=offset,
         )
 
     if not data_type:

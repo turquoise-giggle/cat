@@ -11,49 +11,49 @@ from telegram.ext import CallbackContext, run_async
 def simplify(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.simplify('{}'.format(args[0])))
+    message.reply_text(newton.simplify("{}".format(args[0])))
 
 
 @run_async
 def factor(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.factor('{}'.format(args[0])))
+    message.reply_text(newton.factor("{}".format(args[0])))
 
 
 @run_async
 def derive(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.derive('{}'.format(args[0])))
+    message.reply_text(newton.derive("{}".format(args[0])))
 
 
 @run_async
 def integrate(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.integrate('{}'.format(args[0])))
+    message.reply_text(newton.integrate("{}".format(args[0])))
 
 
 @run_async
 def zeroes(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.zeroes('{}'.format(args[0])))
+    message.reply_text(newton.zeroes("{}".format(args[0])))
 
 
 @run_async
 def tangent(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.tangent('{}'.format(args[0])))
+    message.reply_text(newton.tangent("{}".format(args[0])))
 
 
 @run_async
 def area(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    message.reply_text(newton.area('{}'.format(args[0])))
+    message.reply_text(newton.area("{}".format(args[0])))
 
 
 @run_async
@@ -135,23 +135,23 @@ To find the area under a function, send the request as c:d|f(x) where c is the s
 To compute fractions, enter expressions as numerator(over)denominator. For example, to process 2/4 you must send in your expression as 2(over)4. The result expression will be in standard math notation (1/2, 3/4).
 """
 
-__mod_name__ = 'Math'
+__mod_name__ = "Math"
 
-SIMPLIFY_HANDLER = DisableAbleCommandHandler('math', simplify)
-FACTOR_HANDLER = DisableAbleCommandHandler('factor', factor)
-DERIVE_HANDLER = DisableAbleCommandHandler('derive', derive)
-INTEGRATE_HANDLER = DisableAbleCommandHandler('integrate', integrate)
-ZEROES_HANDLER = DisableAbleCommandHandler('zeroes', zeroes)
-TANGENT_HANDLER = DisableAbleCommandHandler('tangent', tangent)
-AREA_HANDLER = DisableAbleCommandHandler('area', area)
-COS_HANDLER = DisableAbleCommandHandler('cos', cos)
-SIN_HANDLER = DisableAbleCommandHandler('sin', sin)
-TAN_HANDLER = DisableAbleCommandHandler('tan', tan)
-ARCCOS_HANDLER = DisableAbleCommandHandler('arccos', arccos)
-ARCSIN_HANDLER = DisableAbleCommandHandler('arcsin', arcsin)
-ARCTAN_HANDLER = DisableAbleCommandHandler('arctan', arctan)
-ABS_HANDLER = DisableAbleCommandHandler('abs', abs)
-LOG_HANDLER = DisableAbleCommandHandler('log', log)
+SIMPLIFY_HANDLER = DisableAbleCommandHandler("math", simplify)
+FACTOR_HANDLER = DisableAbleCommandHandler("factor", factor)
+DERIVE_HANDLER = DisableAbleCommandHandler("derive", derive)
+INTEGRATE_HANDLER = DisableAbleCommandHandler("integrate", integrate)
+ZEROES_HANDLER = DisableAbleCommandHandler("zeroes", zeroes)
+TANGENT_HANDLER = DisableAbleCommandHandler("tangent", tangent)
+AREA_HANDLER = DisableAbleCommandHandler("area", area)
+COS_HANDLER = DisableAbleCommandHandler("cos", cos)
+SIN_HANDLER = DisableAbleCommandHandler("sin", sin)
+TAN_HANDLER = DisableAbleCommandHandler("tan", tan)
+ARCCOS_HANDLER = DisableAbleCommandHandler("arccos", arccos)
+ARCSIN_HANDLER = DisableAbleCommandHandler("arcsin", arcsin)
+ARCTAN_HANDLER = DisableAbleCommandHandler("arctan", arctan)
+ABS_HANDLER = DisableAbleCommandHandler("abs", abs)
+LOG_HANDLER = DisableAbleCommandHandler("log", log)
 
 dispatcher.add_handler(SIMPLIFY_HANDLER)
 dispatcher.add_handler(FACTOR_HANDLER)

@@ -5,7 +5,7 @@ from sqlalchemy import Column, String
 
 
 class ChatbotChats(BASE):
-    __tablename__ = 'chatbot_chats'
+    __tablename__ = "chatbot_chats"
     chat_id = Column(String(14), primary_key=True)
     ses_id = Column(String(70))
     expires = Column(String(15))
@@ -47,8 +47,8 @@ def set_ses(chat_id, ses_id, expires):
 
 def get_ses(chat_id):
     autochat = SESSION.query(ChatbotChats).get(str(chat_id))
-    sesh = ''
-    exp = ''
+    sesh = ""
+    exp = ""
     if autochat:
         sesh = str(autochat.ses_id)
         exp = str(autochat.expires)

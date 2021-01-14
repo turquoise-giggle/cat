@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, UnicodeText, distinct, func
 
 
 class Disable(BASE):
-    __tablename__ = 'disabled_commands'
+    __tablename__ = "disabled_commands"
     chat_id = Column(String(14), primary_key=True)
     command = Column(UnicodeText, primary_key=True)
 
@@ -14,7 +14,7 @@ class Disable(BASE):
         self.command = command
 
     def __repr__(self):
-        return f'Disabled cmd {self.command} in {self.chat_id}'
+        return f"Disabled cmd {self.command} in {self.chat_id}"
 
 
 Disable.__table__.create(checkfirst=True)
@@ -79,9 +79,13 @@ def num_disabled():
 
 def migrate_chat(old_chat_id, new_chat_id):
     with DISABLE_INSERTION_LOCK:
-        chats = SESSION.query(Disable).filter(
-            Disable.chat_id == str(old_chat_id),
-        ).all()
+        chats = (
+            SESSION.query(Disable)
+            .filter(
+                Disable.chat_id == str(old_chat_id),
+            )
+            .all()
+        )
         for chat in chats:
             chat.chat_id = str(new_chat_id)
             SESSION.add(chat)

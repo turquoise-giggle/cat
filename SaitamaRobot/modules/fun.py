@@ -11,7 +11,7 @@ from telegram import ChatPermissions, ParseMode, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, run_async
 
-GIF_ID = 'CgACAgQAAx0CSVUvGgAC7KpfWxMrgGyQs-GUUJgt-TSO8cOIDgACaAgAAlZD0VHT3Zynpr5nGxsE'
+GIF_ID = "CgACAgQAAx0CSVUvGgAC7KpfWxMrgGyQs-GUUJgt-TSO8cOIDgACaAgAAlZD0VHT3Zynpr5nGxsE"
 
 
 @run_async
@@ -32,7 +32,7 @@ def sanitize(update: Update, context: CallbackContext):
         if message.reply_to_message
         else message.reply_animation
     )
-    reply_animation(GIF_ID, caption=f'*Sanitizes {name}*')
+    reply_animation(GIF_ID, caption=f"*Sanitizes {name}*")
 
 
 @run_async
@@ -50,7 +50,7 @@ def sanitize(update: Update, context: CallbackContext):
     )
     reply_animation(
         random.choice(fun_strings.GIFS),
-        caption=f'*Sanitizes {name}*',
+        caption=f"*Sanitizes {name}*",
     )
 
 
@@ -73,7 +73,7 @@ def slap(update: Update, context: CallbackContext):
         temp = random.choice(fun_strings.SLAP_SAITAMA_TEMPLATES)
 
         if isinstance(temp, list):
-            if temp[2] == 'tmute':
+            if temp[2] == "tmute":
                 if is_user_admin(chat, message.from_user.id):
                     reply_text(temp[1])
                     return
@@ -106,11 +106,14 @@ def slap(update: Update, context: CallbackContext):
     throw = random.choice(fun_strings.THROW)
 
     if update.effective_user.id == 1096215023:
-        temp = '@NeoTheKitty scratches {user2}'
+        temp = "@NeoTheKitty scratches {user2}"
 
     reply = temp.format(
-        user1=user1, user2=user2,
-        item=item, hits=hit, throws=throw,
+        user1=user1,
+        user2=user2,
+        item=item,
+        hits=hit,
+        throws=throw,
     )
 
     reply_text(reply, parse_mode=ParseMode.HTML)
@@ -136,22 +139,22 @@ def pat(update: Update, context: CallbackContext):
         user1 = bot.first_name
         user2 = curr_user
 
-    pat_type = random.choice(('Text', 'Gif', 'Sticker'))
-    if pat_type == 'Gif':
+    pat_type = random.choice(("Text", "Gif", "Sticker"))
+    if pat_type == "Gif":
         try:
             temp = random.choice(fun_strings.PAT_GIFS)
             reply_to.reply_animation(temp)
         except BadRequest:
-            pat_type = 'Text'
+            pat_type = "Text"
 
-    if pat_type == 'Sticker':
+    if pat_type == "Sticker":
         try:
             temp = random.choice(fun_strings.PAT_STICKERS)
             reply_to.reply_sticker(temp)
         except BadRequest:
-            pat_type = 'Text'
+            pat_type = "Text"
 
-    if pat_type == 'Text':
+    if pat_type == "Text":
         temp = random.choice(fun_strings.PAT_TEMPLATES)
         reply = temp.format(user1=user1, user2=user2)
         reply_to.reply_text(reply, parse_mode=ParseMode.HTML)
@@ -165,16 +168,16 @@ def roll(update: Update, context: CallbackContext):
 @run_async
 def shout(update: Update, context: CallbackContext):
     args = context.args
-    text = ' '.join(args)
+    text = " ".join(args)
     result = []
-    result.append(' '.join(list(text)))
+    result.append(" ".join(list(text)))
     for pos, symbol in enumerate(text[1:]):
-        result.append(symbol + ' ' + '  ' * pos + symbol)
-    result = list('\n'.join(result))
+        result.append(symbol + " " + "  " * pos + symbol)
+    result = list("\n".join(result))
     result[0] = text[0]
-    result = ''.join(result)
-    msg = '```\n' + result + '```'
-    return update.effective_message.reply_text(msg, parse_mode='MARKDOWN')
+    result = "".join(result)
+    msg = "```\n" + result + "```"
+    return update.effective_message.reply_text(msg, parse_mode="MARKDOWN")
 
 
 @run_async
@@ -188,7 +191,7 @@ def shrug(update: Update, context: CallbackContext):
     reply_text = (
         msg.reply_to_message.reply_text if msg.reply_to_message else msg.reply_text
     )
-    reply_text(r'¯\_(ツ)_/¯')
+    reply_text(r"¯\_(ツ)_/¯")
 
 
 @run_async
@@ -198,7 +201,7 @@ def bluetext(update: Update, context: CallbackContext):
         msg.reply_to_message.reply_text if msg.reply_to_message else msg.reply_text
     )
     reply_text(
-        '/BLUE /TEXT\n/MUST /CLICK\n/I /AM /A /STUPID /ANIMAL /THAT /IS /ATTRACTED /TO /COLORS',
+        "/BLUE /TEXT\n/MUST /CLICK\n/I /AM /A /STUPID /ANIMAL /THAT /IS /ATTRACTED /TO /COLORS",
     )
 
 
@@ -246,60 +249,60 @@ def table(update: Update, context: CallbackContext):
 
 
 normiefont = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z',
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
 ]
 weebyfont = [
-    '卂',
-    '乃',
-    '匚',
-    '刀',
-    '乇',
-    '下',
-    '厶',
-    '卄',
-    '工',
-    '丁',
-    '长',
-    '乚',
-    '从',
-    '𠘨',
-    '口',
-    '尸',
-    '㔿',
-    '尺',
-    '丂',
-    '丅',
-    '凵',
-    'リ',
-    '山',
-    '乂',
-    '丫',
-    '乙',
+    "卂",
+    "乃",
+    "匚",
+    "刀",
+    "乇",
+    "下",
+    "厶",
+    "卄",
+    "工",
+    "丁",
+    "长",
+    "乚",
+    "从",
+    "𠘨",
+    "口",
+    "尸",
+    "㔿",
+    "尺",
+    "丂",
+    "丅",
+    "凵",
+    "リ",
+    "山",
+    "乂",
+    "丫",
+    "乙",
 ]
 
 
@@ -307,17 +310,17 @@ weebyfont = [
 def weebify(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
-    string = ''
+    string = ""
 
     if message.reply_to_message:
-        string = message.reply_to_message.text.lower().replace(' ', '  ')
+        string = message.reply_to_message.text.lower().replace(" ", "  ")
 
     if args:
-        string = '  '.join(args).lower()
+        string = "  ".join(args).lower()
 
     if not string:
         message.reply_text(
-            'Usage is `/weebify <text>`',
+            "Usage is `/weebify <text>`",
             parse_mode=ParseMode.MARKDOWN,
         )
         return
@@ -350,20 +353,20 @@ __help__ = """
  • `/8ball`*:* predicts using 8ball method
 """
 
-SANITIZE_HANDLER = DisableAbleCommandHandler('sanitize', sanitize)
-RUNS_HANDLER = DisableAbleCommandHandler('runs', runs)
-SLAP_HANDLER = DisableAbleCommandHandler('slap', slap)
-PAT_HANDLER = DisableAbleCommandHandler('pat', pat)
-ROLL_HANDLER = DisableAbleCommandHandler('roll', roll)
-TOSS_HANDLER = DisableAbleCommandHandler('toss', toss)
-SHRUG_HANDLER = DisableAbleCommandHandler('shrug', shrug)
-BLUETEXT_HANDLER = DisableAbleCommandHandler('bluetext', bluetext)
-RLG_HANDLER = DisableAbleCommandHandler('rlg', rlg)
-DECIDE_HANDLER = DisableAbleCommandHandler('decide', decide)
-EIGHTBALL_HANDLER = DisableAbleCommandHandler('8ball', eightball)
-TABLE_HANDLER = DisableAbleCommandHandler('table', table)
-SHOUT_HANDLER = DisableAbleCommandHandler('shout', shout)
-WEEBIFY_HANDLER = DisableAbleCommandHandler('weebify', weebify)
+SANITIZE_HANDLER = DisableAbleCommandHandler("sanitize", sanitize)
+RUNS_HANDLER = DisableAbleCommandHandler("runs", runs)
+SLAP_HANDLER = DisableAbleCommandHandler("slap", slap)
+PAT_HANDLER = DisableAbleCommandHandler("pat", pat)
+ROLL_HANDLER = DisableAbleCommandHandler("roll", roll)
+TOSS_HANDLER = DisableAbleCommandHandler("toss", toss)
+SHRUG_HANDLER = DisableAbleCommandHandler("shrug", shrug)
+BLUETEXT_HANDLER = DisableAbleCommandHandler("bluetext", bluetext)
+RLG_HANDLER = DisableAbleCommandHandler("rlg", rlg)
+DECIDE_HANDLER = DisableAbleCommandHandler("decide", decide)
+EIGHTBALL_HANDLER = DisableAbleCommandHandler("8ball", eightball)
+TABLE_HANDLER = DisableAbleCommandHandler("table", table)
+SHOUT_HANDLER = DisableAbleCommandHandler("shout", shout)
+WEEBIFY_HANDLER = DisableAbleCommandHandler("weebify", weebify)
 
 dispatcher.add_handler(WEEBIFY_HANDLER)
 dispatcher.add_handler(SHOUT_HANDLER)
@@ -380,22 +383,22 @@ dispatcher.add_handler(DECIDE_HANDLER)
 dispatcher.add_handler(EIGHTBALL_HANDLER)
 dispatcher.add_handler(TABLE_HANDLER)
 
-__mod_name__ = 'Fun'
+__mod_name__ = "Fun"
 __command_list__ = [
-    'runs',
-    'slap',
-    'roll',
-    'toss',
-    'shrug',
-    'bluetext',
-    'rlg',
-    'decide',
-    'table',
-    'pat',
-    'sanitize',
-    'shout',
-    'weebify',
-    '8ball',
+    "runs",
+    "slap",
+    "roll",
+    "toss",
+    "shrug",
+    "bluetext",
+    "rlg",
+    "decide",
+    "table",
+    "pat",
+    "sanitize",
+    "shout",
+    "weebify",
+    "8ball",
 ]
 __handlers__ = [
     RUNS_HANDLER,
